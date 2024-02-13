@@ -9,6 +9,14 @@ import { databaseI } from "./interfaces/database.js";
 import { tableDataI } from "./interfaces/dataTable.js";
 import { formatBody } from "./typeorm/lib.js";
 import { setHeader } from "./typeorm/header.js";
+import {
+  manyToMany,
+  manyToOne,
+  oneToMany,
+  oneToOne,
+} from "./typeorm/relations.js";
+import { RelationI } from "./interfaces/relations.js";
+import { TypeORM } from "./typeorm/main.js";
 
 export const app = async () => {
   const entityPath = join(shelljs.pwd().stdout, "src", "entities");
@@ -25,12 +33,7 @@ export const app = async () => {
       const path = join(entityPath, `${table.name}.entity.ts`);
       shelljs.touch(path);
 
-      const header = setHeader(table);
-
-      const text = template(table);
-      const body = formatBody(text);
-
-      const data = header.concat(body, "\n}");
+      const data = TypeORM(table);
 
       writeFile(path, data, (error) => {
         if (error) console.error(error);
