@@ -5,7 +5,7 @@ import inquirer from "inquirer";
 import chalk from "chalk";
 import figlet from "figlet";
 import { join } from "path";
-
+import { writeFile } from "fs";
 import jsonFile from "jsonfile";
 
 const questions = [
@@ -36,10 +36,12 @@ const questions = [
 
 const init = async () => {
   console.clear();
+  const entityPath = join(shelljs.pwd().stdout, "src", "entities");
+  shelljs.rm("-rf", entityPath);
+
   console.log(
     chalk.green(
       figlet.textSync("GenYDB", {
-        // font: "Doh",
         font: "Doom",
         horizontalLayout: "default",
         verticalLayout: "default",
@@ -57,9 +59,38 @@ const init = async () => {
     shelljs.mkdir("-p", "src/entities");
 
     data.database.map((table: tableDataI) => {
-      shelljs.touch(
-        join(shelljs.pwd().stdout, "src", "entities", `${table.name}.entity.ts`)
+      const path = join(
+        shelljs.pwd().stdout,
+        "src",
+        "entities",
+        `${table.name}.entity.ts`
       );
+
+      shelljs.touch(path);
+
+      const text = `${table.columns.map((col) => {
+        return ` 
+  @Column()
+  ${col.name}: ${col.type}
+`;
+      })}
+      `.replace(",", "");
+
+      const body = text
+        .split("\n")
+        .filter((_, idx: number) => idx < text.split("\n").length - 2)
+        .join("\n");
+
+      const header = `import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+
+@Entity()
+export class ${(table.name.match(/[a-zA-Z0-9]+/g) || [])
+        .map((w) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`)
+        .join("")} {`;
+
+      writeFile(path, header.concat(body, "\n}"), (error) => {
+        if (error) console.error(error);
+      });
     });
   } catch (error) {
     console.error(error);
@@ -73,9 +104,14 @@ interface databaseI {
 
 interface tableDataI {
   name: string;
-  columns: string[];
+  columns: ColumnI[];
   primary: string;
   relations: string[];
+}
+
+interface ColumnI {
+  name: string;
+  type: string;
 }
 
 init();
