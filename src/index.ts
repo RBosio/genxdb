@@ -2,13 +2,14 @@
 
 import shelljs from "shelljs";
 import inquirer from "inquirer";
-import chalk from "chalk";
-import figlet from "figlet";
 import { join } from "path";
 import { writeFile } from "fs";
 import jsonFile from "jsonfile";
 
 import { template } from "./template.js";
+import { databaseI } from "./interfaces/database.js";
+import { tableDataI } from "./interfaces/dataTable.js";
+import { setTitle } from "./title.js";
 
 const questions = [
   {
@@ -38,26 +39,17 @@ const questions = [
 
 const init = async () => {
   console.clear();
+
+  setTitle();
+
   const entityPath = join(shelljs.pwd().stdout, "src", "entities");
   shelljs.rm("-rf", entityPath);
-
-  console.log(
-    chalk.green(
-      figlet.textSync("GenYDB", {
-        font: "Doom",
-        horizontalLayout: "default",
-        verticalLayout: "default",
-        width: 120,
-        whitespaceBreak: true,
-      })
-    )
-  );
 
   // const { type, orm, file, src } = await inquirer.prompt(questions);
   const path = join(shelljs.pwd().stdout, "gen.json");
 
   try {
-    const data: databaseI = jsonFile.readFileSync(path);
+    const data: databaseI = await jsonFile.readFile(path);
     shelljs.mkdir("-p", "src/entities");
 
     data.database.map((table: tableDataI) => {
@@ -75,7 +67,7 @@ const init = async () => {
       let body = text
         .split("\n")
         .filter((_, idx: number) => idx < text.split("\n").length - 2)
-        .map((s) => (s.includes(",") ? "" : s))
+        .map((s) => (s.includes(",") && !s.includes("a") ? "" : s))
         .join("\n");
 
       const header = `import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
@@ -93,22 +85,5 @@ export class ${(table.name.match(/[a-zA-Z0-9]+/g) || [])
     console.error(error);
   }
 };
-
-interface databaseI {
-  version: string;
-  database: tableDataI[];
-}
-
-export interface tableDataI {
-  name: string;
-  columns: ColumnI[];
-  primary: string;
-  relations: string[];
-}
-
-interface ColumnI {
-  name: string;
-  type: string;
-}
 
 init();
