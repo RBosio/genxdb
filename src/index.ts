@@ -8,6 +8,8 @@ import { join } from "path";
 import { writeFile } from "fs";
 import jsonFile from "jsonfile";
 
+import { template } from "./template.js";
+
 const questions = [
   {
     name: "type",
@@ -68,17 +70,12 @@ const init = async () => {
 
       shelljs.touch(path);
 
-      const text = `${table.columns.map((col) => {
-        return ` 
-  @Column()
-  ${col.name}: ${col.type}
-`;
-      })}
-      `.replace(",", "");
+      const text = template(table);
 
-      const body = text
+      let body = text
         .split("\n")
         .filter((_, idx: number) => idx < text.split("\n").length - 2)
+        .map((s) => (s.includes(",") ? "" : s))
         .join("\n");
 
       const header = `import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
@@ -102,7 +99,7 @@ interface databaseI {
   database: tableDataI[];
 }
 
-interface tableDataI {
+export interface tableDataI {
   name: string;
   columns: ColumnI[];
   primary: string;
