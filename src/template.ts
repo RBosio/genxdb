@@ -33,5 +33,9 @@ const isNull = (col: ColumnI): string => {
 };
 
 const isDefault = (col: ColumnI): string => {
-  return col.default ? ` default: "${col.default}"` : "";
+  return col.default
+    ? ` default: ${col.type === "Date" ? "() => " : ""}${
+        col.type === "string" || col.type === "Date" ? '"' : ""
+      }${col.default}${col.type === "string" || col.type === "Date" ? '"' : ""}`
+    : "";
 };
