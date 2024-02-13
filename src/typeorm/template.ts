@@ -1,5 +1,5 @@
-import { ColumnI } from "./interfaces/column";
-import { tableDataI } from "./interfaces/dataTable";
+import { ColumnI } from "../interfaces/column";
+import { tableDataI } from "../interfaces/dataTable";
 
 export const template = (table: tableDataI) => `${table.columns.map((col) => {
   let text = "";
