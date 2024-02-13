@@ -1,5 +1,10 @@
-const questions = [
+export const questions = [
   {
+    name: "src",
+    type: "input",
+    message: "Src dir? (Y/N)",
+  },
+  /*{
     name: "type",
     type: "list",
     message: "Type",
@@ -16,10 +21,5 @@ const questions = [
     type: "list",
     message: "Project",
     choices: ["Javascript", "Typescript"],
-  },
-  {
-    name: "src",
-    type: "input",
-    message: "Src dir? (Y/N)",
-  },
+  },*/
 ];

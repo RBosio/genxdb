@@ -1,8 +1,8 @@
-import { tableDataI } from "../interfaces/dataTable";
+import { DataTableI } from "../interfaces/dataTable";
 
 import { getName } from "./lib.js";
 
-export const setHeader = (table: tableDataI): string => {
+export const setHeader = (table: DataTableI): string => {
   const header = [
     `import { Entity, PrimaryGeneratedColumn, Column${
       relationOneToOne(table) ? ", OneToOne" : ""
@@ -28,26 +28,26 @@ export const setHeader = (table: tableDataI): string => {
   return header.join("\n");
 };
 
-const relationOneToOne = (table: tableDataI): boolean => {
+const relationOneToOne = (table: DataTableI): boolean => {
   return table.relations?.filter((rel) => rel.relation === "1-1").length > 0;
 };
 
-const relationOneToMany = (table: tableDataI): boolean => {
+const relationOneToMany = (table: DataTableI): boolean => {
   return table.relations?.filter((rel) => rel.relation === "1-N").length > 0;
 };
 
-const relationManyToOne = (table: tableDataI): boolean => {
+const relationManyToOne = (table: DataTableI): boolean => {
   return table.relations?.filter((rel) => rel.relation === "N-1").length > 0;
 };
 
-const relationManyToMany = (table: tableDataI): boolean => {
+const relationManyToMany = (table: DataTableI): boolean => {
   return table.relations?.filter((rel) => rel.relation === "N-M").length > 0;
 };
 
-const joinColumn = (table: tableDataI) => {
+const joinColumn = (table: DataTableI) => {
   return table.relations?.filter((rel) => rel.joinColumn === "true").length > 0;
 };
 
-const joinTable = (table: tableDataI) => {
+const joinTable = (table: DataTableI) => {
   return table.relations?.filter((rel) => rel.joinTable === "true").length > 0;
 };

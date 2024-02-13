@@ -1,7 +1,7 @@
 import { ColumnI } from "../interfaces/column";
-import { tableDataI } from "../interfaces/dataTable";
+import { DataTableI } from "../interfaces/dataTable";
 
-export const template = (table: tableDataI) => `${table.columns.map((col) => {
+export const template = (table: DataTableI) => `${table.columns.map((col) => {
   let text = "";
   if (isNull(col)) {
     text = isNull(col).concat(",", isDefault(col));

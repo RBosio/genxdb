@@ -1,10 +1,8 @@
-import { tableDataI } from "../interfaces/dataTable.js";
+import { DataTableI } from "../interfaces/dataTable.js";
 import { RelationI } from "../interfaces/relations.js";
-import { setHeader } from "./header.js";
-import { formatBody, getName, getNameLower } from "./lib.js";
-import { template } from "./template.js";
+import { getName, getNameLower } from "./lib.js";
 
-export const relations = (table: tableDataI): string[] => {
+export const relations = (table: DataTableI): string[] => {
   const relations: string[] = [];
 
   table.relations

@@ -1,6 +1,6 @@
-import { tableDataI } from "./dataTable";
+import { DataTableI } from "./dataTable";
 
-export interface databaseI {
+export interface DatabaseI {
   version: string;
-  database: tableDataI[];
+  database: DataTableI[];
 }
