@@ -25,17 +25,33 @@ export const template = (table: DataTableI) => `${table.columns.map((col) => {
   `;
 
 const isNull = (col: ColumnI): string => {
-  return col.nullable === "true"
-    ? " nullable: true"
-    : col.nullable === "false"
-    ? " nullable: false"
+  return typeof col.nullable === "boolean"
+    ? ` nullable: ${col.nullable?.toString()}`
     : "";
 };
 
 const isDefault = (col: ColumnI): string => {
+  if (typeof col.default !== "undefined") {
+    let str = " default: ";
+    if (col.type === "Date") {
+      str = str.concat("() => ");
+    }
+    if (col.type === "Date" || col.type === "string") {
+      str = str.concat('"');
+    }
+    str = str.concat(col.default.toString());
+    if (col.type === "Date" || col.type === "string") {
+      str = str.concat('"');
+    }
+
+    return str;
+  }
+  return "";
   return col.default
     ? ` default: ${col.type === "Date" ? "() => " : ""}${
         col.type === "string" || col.type === "Date" ? '"' : ""
       }${col.default}${col.type === "string" || col.type === "Date" ? '"' : ""}`
+    : col.type === "boolean" && col.default === false
+    ? col.default.toString()
     : "";
 };

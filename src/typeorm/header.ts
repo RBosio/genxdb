@@ -45,9 +45,9 @@ const relationManyToMany = (table: DataTableI): boolean => {
 };
 
 const joinColumn = (table: DataTableI) => {
-  return table.relations?.filter((rel) => rel.joinColumn === "true").length > 0;
+  return table.relations?.filter((rel) => rel.joinColumn).length > 0;
 };
 
 const joinTable = (table: DataTableI) => {
-  return table.relations?.filter((rel) => rel.joinTable === "true").length > 0;
+  return table.relations?.filter((rel) => rel.joinTable).length > 0;
 };

@@ -9,7 +9,7 @@ export const app = async () => {
   const { src } = await inquirer.prompt(questions);
   let entityPath = "";
 
-  if (src.toLowerCase() === "y") {
+  if (src.toLowerCase() !== "n") {
     entityPath = join(shelljs.pwd().stdout, "src", "entities");
     shelljs.rm("-rf", entityPath);
 
@@ -21,7 +21,7 @@ export const app = async () => {
     shelljs.mkdir("-p", "entities");
   }
 
-  const sourceFilePath = join(shelljs.pwd().stdout, "gen.json");
+  const sourceFilePath = join(shelljs.pwd().stdout, "genxdb.json");
 
   TypeORM(entityPath, sourceFilePath);
 };

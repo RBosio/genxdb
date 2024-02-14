@@ -4,7 +4,7 @@ import figlet from "figlet";
 export const setTitle = () => {
   console.log(
     chalk.green(
-      figlet.textSync("GenYDB", {
+      figlet.textSync("GenXDB", {
         font: "Doom",
         horizontalLayout: "default",
         verticalLayout: "default",

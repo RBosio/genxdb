@@ -32,19 +32,19 @@ export const relations = (table: DataTableI): string[] => {
   return relations;
 };
 
-export const oneToOne = (name: string, join: string): string => {
+const oneToOne = (name: string, join: boolean): string => {
   const r = [
     `    @OneToOne(() => ${getName(name)})`,
-    `${join === "true" ? "    @JoinColumn()" : ""}`,
+    `${join ? "    @JoinColumn()" : ""}`,
     `    ${getNameLower(name)}: ${getName(name)}`,
   ];
 
-  return join === "true"
+  return join
     ? r.join("\n")
     : r.filter((rel) => rel.length > 0).join("\n");
 };
 
-export const oneToMany = (name: string, rel: string): string => {
+const oneToMany = (name: string, rel: string): string => {
   const r = [
     `    @OneToMany(() => ${getName(name)}, ${getNameLower(
       name
@@ -55,7 +55,7 @@ export const oneToMany = (name: string, rel: string): string => {
   return r;
 };
 
-export const manyToOne = (name: string, rel: string): string => {
+const manyToOne = (name: string, rel: string): string => {
   const r = [
     `    @ManyToOne(() => ${getName(name)}, ${getNameLower(
       name
@@ -66,16 +66,16 @@ export const manyToOne = (name: string, rel: string): string => {
   return r;
 };
 
-export const manyToMany = (name: string, rel: string, join: string): string => {
+const manyToMany = (name: string, rel: string, join: boolean): string => {
   const r = [
     `    @ManyToMany(() => ${getName(name)}, ${getNameLower(
       name
     )} => ${getNameLower(name)}.${rel}s )`,
-    `${join === "true" ? "    @JoinTable()" : ""}`,
+    `${join ? "    @JoinTable()" : ""}`,
     `    ${getNameLower(name)}s: ${getName(name)}[]`,
   ];
 
-  return join === "true"
+  return join
     ? r.join("\n")
     : r.filter((rel) => rel.length > 0).join("\n");
 };
