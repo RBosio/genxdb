@@ -1,6 +1,6 @@
 {
   "name": "genxdb",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "GenXDB is a command-line interface tool that is used to design and generate models easily and quickly<br> using the json format based on different orms such as TypeORM",
   "keywords": [
     "cli",
@@ -21,7 +21,11 @@
   },
   "author": "Fiido (https://github.com/RBosio)",
   "license": "MIT",
-  "homepage": "https://github.com/RBosio/genYDB",
+  "homepage": "https://github.com/RBosio/genXDB",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RBosio/genXDB"
+  },
   "dependencies": {
     "chalk": "^4.1.2",
     "figlet": "^1.7.0",

@@ -47,11 +47,4 @@ const isDefault = (col: ColumnI): string => {
     return str;
   }
   return "";
-  return col.default
-    ? ` default: ${col.type === "Date" ? "() => " : ""}${
-        col.type === "string" || col.type === "Date" ? '"' : ""
-      }${col.default}${col.type === "string" || col.type === "Date" ? '"' : ""}`
-    : col.type === "boolean" && col.default === false
-    ? col.default.toString()
-    : "";
 };

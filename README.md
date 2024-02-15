@@ -4,7 +4,7 @@
 
 <p>
   <br>
-  <img src="./src/public/logo.png" alt="GenXDB logo" width="240px" height="240px"/>
+  <img src="https://raw.githubusercontent.com/RBosio/genxdb/main/src/public/logo.png" alt="GenXDB logo" width="240px" height="240px"/>
   <br><br>
   <em>GenXDB is a command-line interface tool that is used to design and generate models easily and quickly<br> using the json format based on different orms such as TypeORM</em>
   <br>
@@ -125,7 +125,7 @@ genxdb
 
 👤**Rocco Bosio**
 
-- Github: [@RBosio](https://github.com/Rbosio)
+- Github: [@RBosio](https://github.com/RBosio)
 
 ## Contributing
 

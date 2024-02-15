@@ -1,4 +1,3 @@
-import jsonFile from "jsonfile";
 import { writeFile } from "fs";
 import { join } from "path";
 import shelljs from "shelljs";
@@ -11,13 +10,11 @@ import { relations } from "./relations.js";
 import { template } from "./template.js";
 
 export const TypeORM = async (
+  data: DatabaseI,
   entityPath: string,
-  sourceFilePath: string
 ) => {
   try {
-    const data: DatabaseI = await jsonFile.readFile(sourceFilePath);
-
-    data.database.map((table: DataTableI) => {
+    data.database?.map((table: DataTableI) => {
       const path = join(entityPath, `${table.name}.entity.ts`);
       shelljs.touch(path);
 

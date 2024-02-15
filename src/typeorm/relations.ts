@@ -39,9 +39,7 @@ const oneToOne = (name: string, join: boolean): string => {
     `    ${getNameLower(name)}: ${getName(name)}`,
   ];
 
-  return join
-    ? r.join("\n")
-    : r.filter((rel) => rel.length > 0).join("\n");
+  return join ? r.join("\n") : r.filter((rel) => rel.length > 0).join("\n");
 };
 
 const oneToMany = (name: string, rel: string): string => {
@@ -49,7 +47,7 @@ const oneToMany = (name: string, rel: string): string => {
     `    @OneToMany(() => ${getName(name)}, ${getNameLower(
       name
     )} => ${getNameLower(name)}.${rel} )`,
-    `    ${getNameLower(name)}s: ${getName(name)}`,
+    `    ${getNameLower(name)}s: ${getName(name)}[]`,
   ].join("\n");
 
   return r;
@@ -70,12 +68,10 @@ const manyToMany = (name: string, rel: string, join: boolean): string => {
   const r = [
     `    @ManyToMany(() => ${getName(name)}, ${getNameLower(
       name
-    )} => ${getNameLower(name)}.${rel}s )`,
+    )}s => ${getNameLower(name)}s.${rel}s )`,
     `${join ? "    @JoinTable()" : ""}`,
     `    ${getNameLower(name)}s: ${getName(name)}[]`,
   ];
 
-  return join
-    ? r.join("\n")
-    : r.filter((rel) => rel.length > 0).join("\n");
+  return join ? r.join("\n") : r.filter((rel) => rel.length > 0).join("\n");
 };
