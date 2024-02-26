@@ -1,38 +1,39 @@
 import { ColumnI } from "../interfaces/column";
 import { DataTableI } from "../interfaces/dataTable";
 
-export const template = (table: DataTableI) => `${table.columns.map((col) => {
-  let text = "";
-  if (isNull(col)) {
-    text = isNull(col).concat(",", isDefault(col));
-  } else if (isDefault(col)) {
-    text = isDefault(col);
-  }
+export const template = (table: DataTableI): string[] => {
+  const body: string[] = [];
 
-  text = text[text.length - 1] === "," ? text.slice(0, text.length - 1) : text;
+  table.columns.map((col: ColumnI, idx: number) => {
+    body.push(
+      `\t${
+        isPrimary(table.primary, col)
+          ? "@PrimaryGeneratedColumn()"
+          : `@Column(${setColumn(col)})`
+      }`
+    );
 
-  return ` 
-    ${
-      table.primary === col.name
-        ? `@PrimaryGeneratedColumn()`
-        : `@Column(${text.length > 0 ? "{" : ""}${
-            text.length > 0 ? text.concat(" ") : ""
-          }${text.length > 0 ? "}" : ""})`
-    }
-    ${col.name}: ${col.type}
-`;
-})}
-  `;
+    body.push(
+      `\t${col.name}: ${col.type}${idx < table.columns.length - 1 ? "\n" : ""}`
+    );
+  });
 
-const isNull = (col: ColumnI): string => {
-  return typeof col.nullable === "boolean"
-    ? ` nullable: ${col.nullable?.toString()}`
-    : "";
+  return body;
 };
 
-const isDefault = (col: ColumnI): string => {
+const isPrimary = (primary: string, col: ColumnI): boolean => {
+  return primary === col.name ? true : false;
+};
+
+const isNull = (col: ColumnI): string[] => {
+  return typeof col.nullable === "boolean"
+    ? [`nullable: ${col.nullable?.toString()}`]
+    : [];
+};
+
+const isDefault = (col: ColumnI): string[] => {
   if (typeof col.default !== "undefined") {
-    let str = " default: ";
+    let str = ["default: "];
     if (col.type === "Date") {
       str = str.concat("() => ");
     }
@@ -44,7 +45,14 @@ const isDefault = (col: ColumnI): string => {
       str = str.concat('"');
     }
 
-    return str;
+    return [str.join("")];
   }
-  return "";
+
+  return [];
+};
+
+const setColumn = (col: ColumnI): string => {
+  if (isNull(col).length === 0 && isDefault(col).length === 0) return "";
+
+  return `{ ${isNull(col).concat(isDefault(col)).join(", ")} }`;
 };

@@ -1,7 +1,7 @@
 import { DataTableI } from "../interfaces/dataTable.js";
 import { setHeader } from "./header.js";
 import { relations } from "./relations.js";
-import { template } from "./template2.js";
+import { template } from "./template.js";
 
 export const TypeORM = async (
   table: DataTableI
