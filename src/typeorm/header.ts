@@ -2,7 +2,7 @@ import { DataTableI } from "../interfaces/dataTable";
 
 import { getName } from "./lib.js";
 
-export const setHeader = (table: DataTableI): string => {
+export const setHeader = (table: DataTableI): string[] => {
   const header = [
     `import { Entity, PrimaryGeneratedColumn, Column${
       relationOneToOne(table) ? ", OneToOne" : ""
@@ -25,7 +25,7 @@ export const setHeader = (table: DataTableI): string => {
     `export class ${getName(table.name)} {`,
   ];
 
-  return header.join("\n");
+  return header;
 };
 
 const relationOneToOne = (table: DataTableI): boolean => {
