@@ -53,7 +53,7 @@ export const app = async () => {
           const path = join(entityPath, `${table.name}.entity.ts`);
           shelljs.touch(path);
 
-          const data = await TypeORM(table);
+          const data = await TypeORM(table, rel);
 
           if (data) {
             const t = writeFile(path, data.join("\n"), (error) => {
