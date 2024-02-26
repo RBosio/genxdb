@@ -1,6 +1,6 @@
 {
   "name": "genxdb",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "GenXDB is a command-line interface tool that is used to design and generate models easily and quickly<br> using the json format based on different orms such as TypeORM",
   "keywords": [
     "cli",

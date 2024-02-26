@@ -51,8 +51,34 @@ const isDefault = (col: ColumnI): string[] => {
   return [];
 };
 
-const setColumn = (col: ColumnI): string => {
-  if (isNull(col).length === 0 && isDefault(col).length === 0) return "";
+const isUnique = (col: ColumnI): string[] => {
+  return typeof col.unique === "boolean"
+    ? [`unique: ${col.unique?.toString()}`]
+    : [];
+};
 
-  return `{ ${isNull(col).concat(isDefault(col)).join(", ")} }`;
+const length = (col: ColumnI): string[] => {
+  return typeof col.length === "number" && col.type === "string"
+    ? [`type: "varchar", length: ${col.length}`]
+    : [];
+};
+
+const setColumn = (col: ColumnI): string => {
+  if (
+    isNull(col).length === 0 &&
+    isDefault(col).length === 0 &&
+    isUnique(col).length === 0 &&
+    length(col).length === 0
+  )
+    return "";
+
+  return `{ ${formatColumn(col)} }`;
+};
+
+const formatColumn = (col: ColumnI) => {
+  return isNull(col)
+    .concat(isDefault(col))
+    .concat(isUnique(col))
+    .concat(length(col))
+    .join(", ");
 };
