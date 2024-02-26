@@ -64,7 +64,8 @@ genxdb
         },
         {
           "name": "email",
-          "type": "string"
+          "type": "string",
+          "unique": true
         },
         {
           "name": "password",
@@ -93,7 +94,8 @@ genxdb
         },
         {
           "name": "name",
-          "type": "string"
+          "type": "string",
+          "length": 150
         }
       ],
       "primary": "id",
@@ -103,14 +105,48 @@ genxdb
           "relation": "N-1"
         }
       ]
+    },
+    {
+      "name": "role",
+      "columns": [
+        {
+          "name": "id",
+          "type": "number"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "primary": "id",
+      "relations": [
+        {
+          "table": "user",
+          "relation": "N-M"
+        }
+      ]
     }
   ]
 }
 ```
 
+## Output files example
+
+### user.entity.ts
+
+<img src="https://raw.githubusercontent.com/RBosio/genxdb/main/src/public/user.png" alt="User entity" />
+
+### task.entity.ts
+
+<img src="https://raw.githubusercontent.com/RBosio/genxdb/main/src/public/task.png" alt="Task entity" />
+
+### role.entity.ts
+
+<img src="https://raw.githubusercontent.com/RBosio/genxdb/main/src/public/role.png" alt="Role entity" />
+
 <div align="center">
 
-### Relations
+## Relations
 
 |     Name     | Type |
 | :----------: | :--: |
