@@ -1,6 +1,6 @@
 {
   "name": "genxdb",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "GenXDB is a command-line interface tool that is used to design and generate models easily and quickly<br> using the json format based on different orms such as TypeORM",
   "keywords": [
     "cli",
@@ -17,7 +17,8 @@
   "type": "module",
   "scripts": {
     "prepare": "tsc",
-    "start": "tsc && node dist/"
+    "start": "npm run rm && tsc && node dist/",
+    "rm": "rimraf entities/ src/entities/"
   },
   "author": "Fiido (https://github.com/RBosio)",
   "license": "MIT",
@@ -37,6 +38,8 @@
     "@types/figlet": "^1.5.8",
     "@types/inquirer": "^9.0.7",
     "@types/jsonfile": "^6.1.4",
-    "@types/shelljs": "^0.8.15"
+    "@types/shelljs": "^0.8.15",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
   }
 }
