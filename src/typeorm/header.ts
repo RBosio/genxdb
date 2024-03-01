@@ -1,6 +1,6 @@
 import { RelationI } from "../interfaces/relations";
 
-import { getName } from "./lib.js";
+import { getName } from "../lib/getNames.js";
 
 export const setHeader = (relations: RelationI[]): string[] => {
   const header = [

@@ -1,4 +1,5 @@
 src/
+prisma/
 tsconfig.json
 tslint.json
 .prettierrc

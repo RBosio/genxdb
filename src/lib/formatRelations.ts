@@ -1,8 +1,24 @@
+import { DatabaseI } from "../interfaces/database";
 import { RelationI } from "../interfaces/relations";
 
 const rela: RelationI[] = [];
 
-export const formatRelations = (relations: RelationI[]) => {
+export const formatRelations = (data: DatabaseI) => {
+  let relations: RelationI[] = [];
+
+  data.database.forEach((table) => {
+    const temp = table.relations?.map((rel) => {
+      return {
+        ...rel,
+        origin: table.name,
+      };
+    });
+
+    if (temp) {
+      relations = relations.concat(temp);
+    }
+  });
+
   relations.forEach((rel: RelationI) => {
     if (rel.relation === "1-N") {
       oneToMany(relations, rel);
@@ -112,14 +128,4 @@ const manyToMany = (relations: RelationI[], rel: RelationI) => {
       joinTable: rel.joinTable ? false : true,
     });
   }
-};
-
-export const getName = (name: string): string => {
-  return (name.match(/[a-zA-Z0-9]+/g) || [])
-    .map((w) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`)
-    .join("");
-};
-
-export const getNameLower = (name: string): string => {
-  return getName(name)[0].toLowerCase().concat(getName(name).slice(1));
 };

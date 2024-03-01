@@ -1,7 +1,7 @@
 {
   "name": "genxdb",
-  "version": "1.2.4",
-  "description": "GenXDB is a command-line interface tool that is used to design and generate models easily and quickly<br> using the json format based on different orms such as TypeORM",
+  "version": "2.0.0",
+  "description": "GenXDB is a command-line interface tool that is used to design and generate models easily and quickly<br> using the json format based on different orms such as TypeORM and Prisma",
   "keywords": [
     "cli",
     "orm",
@@ -18,7 +18,7 @@
   "scripts": {
     "prepare": "tsc",
     "start": "npm run rm && tsc && node dist/",
-    "rm": "rimraf entities/ src/entities/"
+    "rm": "rimraf entities/ src/entities/ prisma/"
   },
   "author": "Fiido (https://github.com/RBosio)",
   "license": "MIT",
