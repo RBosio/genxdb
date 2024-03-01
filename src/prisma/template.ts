@@ -82,8 +82,11 @@ export const template = (table: DataTableI): string[] => {
 const getProperties = (col: ColumnI, primary: string): string => {
   let str: string[] = [];
 
-  str = str.concat(isPrimary(primary, col) ? ["@id"] : [""]);
+  str = str.concat(
+    isPrimary(primary, col) ? ["@id @default(autoincrement())"] : [""]
+  );
   str = str.concat(isDefault(col));
+  str = str.concat(isUnique(col));
 
   str = str.filter((s) => s.length > 0);
   return str.join(" ");
@@ -136,9 +139,7 @@ const isDefault = (col: ColumnI): string[] => {
 };
 
 const isUnique = (col: ColumnI): string[] => {
-  return typeof col.unique === "boolean"
-    ? [`unique: ${col.unique?.toString()}`]
-    : [];
+  return typeof col.unique === "boolean" ? ["@unique"] : [];
 };
 
 const length = (col: ColumnI): string[] => {
