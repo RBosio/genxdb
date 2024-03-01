@@ -69,14 +69,24 @@ export const template = (table: DataTableI): string[] => {
         .join("");
 
       body.push(
-        `\t${col.name}${t}${getColType(col.type)}${tt}${
-          isPrimary(table.primary, col) ? "@id" : ""
-        }`
+        `\t${col.name}${t}${getColType(col.type)}${isNull(
+          col
+        )}${tt}${getProperties(col, table.primary)}`
       );
     }
   });
 
   return body;
+};
+
+const getProperties = (col: ColumnI, primary: string): string => {
+  let str: string[] = [];
+
+  str = str.concat(isPrimary(primary, col) ? ["@id"] : [""]);
+  str = str.concat(isDefault(col));
+
+  str = str.filter((s) => s.length > 0);
+  return str.join(" ");
 };
 
 const getColType = (type: string) => {
@@ -99,25 +109,25 @@ const isPrimary = (primary: string, col: ColumnI): boolean => {
   return primary === col.name ? true : false;
 };
 
-const isNull = (col: ColumnI): string[] => {
-  return typeof col.nullable === "boolean"
-    ? [`nullable: ${col.nullable?.toString()}`]
-    : [];
+const isNull = (col: ColumnI): string => {
+  return typeof col.nullable === "boolean" ? "?" : "";
 };
 
 const isDefault = (col: ColumnI): string[] => {
   if (typeof col.default !== "undefined") {
-    let str = ["default: "];
+    let str = ["@default("];
+    if (col.type === "string") {
+      str = str.concat('"');
+    }
     if (col.type === "Date") {
-      str = str.concat("() => ");
+      str = str.concat("now()");
+    } else {
+      str = str.concat(col.default.toString());
     }
-    if (col.type === "Date" || col.type === "string") {
+    if (col.type === "string") {
       str = str.concat('"');
     }
-    str = str.concat(col.default.toString());
-    if (col.type === "Date" || col.type === "string") {
-      str = str.concat('"');
-    }
+    str = str.concat(")");
 
     return [str.join("")];
   }
@@ -135,24 +145,4 @@ const length = (col: ColumnI): string[] => {
   return typeof col.length === "number" && col.type === "string"
     ? [`type: "varchar", length: ${col.length}`]
     : [];
-};
-
-const setColumn = (col: ColumnI): string => {
-  if (
-    isNull(col).length === 0 &&
-    isDefault(col).length === 0 &&
-    isUnique(col).length === 0 &&
-    length(col).length === 0
-  )
-    return "";
-
-  return `{ ${formatColumn(col)} }`;
-};
-
-const formatColumn = (col: ColumnI) => {
-  return isNull(col)
-    .concat(isDefault(col))
-    .concat(isUnique(col))
-    .concat(length(col))
-    .join(", ");
 };

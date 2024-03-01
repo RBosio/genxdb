@@ -1,6 +1,5 @@
-import { DataTableI } from "../interfaces/dataTable.js";
 import { RelationI } from "../interfaces/relations.js";
-import { getName, getNameLower } from "./lib.js";
+import { getName, getNameLower } from "../lib/getNames.js";
 
 export const relations = (rel: RelationI[]): string[] => {
   const relations: string[] = [];

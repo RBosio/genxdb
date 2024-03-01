@@ -1,4 +1,3 @@
-import { DataTableI } from "../interfaces/dataTable.js";
 import { RelationI } from "../interfaces/relations.js";
 import { getName, getNameLower } from "../lib/getNames.js";
 
